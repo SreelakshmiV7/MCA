@@ -1,0 +1,393 @@
+Lab sheet - 15-Sep-2025 –Doubly Linked Lists
+
+
+OUTPUTS :
+
+Enter number of nodes: 10
+1 9 8 2 63 22 54 64 98 41
+
+1.Display
+2.Search
+3.Count
+4.Display alternate
+5.Display even pos
+6.Find middle
+7.Insert first
+8.Insert last
+9.Insert after
+10.Insert before
+11.Insert between
+12.Insert at pos
+13.Delete first
+14.Delete last
+15.Delete after
+16.Delete before
+17.Delete at pos
+18.Reverse
+0.Exit
+Choice: 1
+1 9 8 2 63 22 54 64 98 41 
+
+1.Display
+2.Search
+3.Count
+4.Display alternate
+5.Display even pos
+6.Find middle
+7.Insert first
+8.Insert last
+9.Insert after
+10.Insert before
+11.Insert between
+12.Insert at pos
+13.Delete first
+14.Delete last
+15.Delete after
+16.Delete before
+17.Delete at pos
+18.Reverse
+0.Exit
+Choice: 2
+Enter value: 22
+1 9 8 2 63 22 54 64 98 41 
+Found at position 6
+
+1.Display
+2.Search
+3.Count
+4.Display alternate
+5.Display even pos
+6.Find middle
+7.Insert first
+8.Insert last
+9.Insert after
+10.Insert before
+11.Insert between
+12.Insert at pos
+13.Delete first
+14.Delete last
+15.Delete after
+16.Delete before
+17.Delete at pos
+18.Reverse
+0.Exit
+Choice: 3
+1 9 8 2 63 22 54 64 98 41 
+Total nodes: 10
+
+1.Display
+2.Search
+3.Count
+4.Display alternate
+5.Display even pos
+6.Find middle
+7.Insert first
+8.Insert last
+9.Insert after
+10.Insert before
+11.Insert between
+12.Insert at pos
+13.Delete first
+14.Delete last
+15.Delete after
+16.Delete before
+17.Delete at pos
+18.Reverse
+0.Exit
+Choice: 4
+1 9 8 2 63 22 54 64 98 41 
+1 8 63 54 98 
+
+1.Display
+2.Search
+3.Count
+4.Display alternate
+5.Display even pos
+6.Find middle
+7.Insert first
+8.Insert last
+9.Insert after
+10.Insert before
+11.Insert between
+12.Insert at pos
+13.Delete first
+14.Delete last
+15.Delete after
+16.Delete before
+17.Delete at pos
+18.Reverse
+0.Exit
+Choice: 5
+1 9 8 2 63 22 54 64 98 41 
+9 2 22 64 41 
+
+1.Display
+2.Search
+3.Count
+4.Display alternate
+5.Display even pos
+6.Find middle
+7.Insert first
+8.Insert last
+9.Insert after
+10.Insert before
+11.Insert between
+12.Insert at pos
+13.Delete first
+14.Delete last
+15.Delete after
+16.Delete before
+17.Delete at pos
+18.Reverse
+0.Exit
+Choice: 6
+1 9 8 2 63 22 54 64 98 41 
+Middle nodes: 63 22
+
+1.Display
+2.Search
+3.Count
+4.Display alternate
+5.Display even pos
+6.Find middle
+7.Insert first
+8.Insert last
+9.Insert after
+10.Insert before
+11.Insert between
+12.Insert at pos
+13.Delete first
+14.Delete last
+15.Delete after
+16.Delete before
+17.Delete at pos
+18.Reverse
+0.Exit
+Choice: 7
+Enter value: 0
+0 1 9 8 2 63 22 54 64 98 41 
+
+1.Display
+2.Search
+3.Count
+4.Display alternate
+5.Display even pos
+6.Find middle
+7.Insert first
+8.Insert last
+9.Insert after
+10.Insert before
+11.Insert between
+12.Insert at pos
+13.Delete first
+14.Delete last
+15.Delete after
+16.Delete before
+17.Delete at pos
+18.Reverse
+0.Exit
+Choice: 8
+Enter value: 10
+0 1 9 8 2 63 22 54 64 98 41 10 
+
+1.Display
+2.Search
+3.Count
+4.Display alternate
+5.Display even pos
+6.Find middle
+7.Insert first
+8.Insert last
+9.Insert after
+10.Insert before
+11.Insert between
+12.Insert at pos
+13.Delete first
+14.Delete last
+15.Delete after
+16.Delete before
+17.Delete at pos
+18.Reverse
+0.Exit
+Choice: 11
+Enter two values and new value: 22 54 100
+0 1 9 8 2 63 22 100 54 64 98 41 10 
+
+1.Display
+2.Search
+3.Count
+4.Display alternate
+5.Display even pos
+6.Find middle
+7.Insert first
+8.Insert last
+9.Insert after
+10.Insert before
+11.Insert between
+12.Insert at pos
+13.Delete first
+14.Delete last
+15.Delete after
+16.Delete before
+17.Delete at pos
+18.Reverse
+0.Exit
+Choice: 12
+Enter position and value: 7 77
+0 1 9 8 2 63 77 22 100 54 64 98 41 10 
+
+1.Display
+2.Search
+3.Count
+4.Display alternate
+5.Display even pos
+6.Find middle
+7.Insert first
+8.Insert last
+9.Insert after
+10.Insert before
+11.Insert between
+12.Insert at pos
+13.Delete first
+14.Delete last
+15.Delete after
+16.Delete before
+17.Delete at pos
+18.Reverse
+0.Exit
+Choice: 13
+1 9 8 2 63 77 22 100 54 64 98 41 10 
+
+1.Display
+2.Search
+3.Count
+4.Display alternate
+5.Display even pos
+6.Find middle
+7.Insert first
+8.Insert last
+9.Insert after
+10.Insert before
+11.Insert between
+12.Insert at pos
+13.Delete first
+14.Delete last
+15.Delete after
+16.Delete before
+17.Delete at pos
+18.Reverse
+0.Exit
+Choice: 14
+1 9 8 2 63 77 22 100 54 64 98 41 
+
+1.Display
+2.Search
+3.Count
+4.Display alternate
+5.Display even pos
+6.Find middle
+7.Insert first
+8.Insert last
+9.Insert after
+10.Insert before
+11.Insert between
+12.Insert at pos
+13.Delete first
+14.Delete last
+15.Delete after
+16.Delete before
+17.Delete at pos
+18.Reverse
+0.Exit
+Choice: 15
+Enter key: 100
+1 9 8 2 63 77 22 100 64 98 41 
+
+1.Display
+2.Search
+3.Count
+4.Display alternate
+5.Display even pos
+6.Find middle
+7.Insert first
+8.Insert last
+9.Insert after
+10.Insert before
+11.Insert between
+12.Insert at pos
+13.Delete first
+14.Delete last
+15.Delete after
+16.Delete before
+17.Delete at pos
+18.Reverse
+0.Exit
+Choice: 16
+Enter key: 77
+1 9 8 2 77 22 100 64 98 41 
+
+1.Display
+2.Search
+3.Count
+4.Display alternate
+5.Display even pos
+6.Find middle
+7.Insert first
+8.Insert last
+9.Insert after
+10.Insert before
+11.Insert between
+12.Insert at pos
+13.Delete first
+14.Delete last
+15.Delete after
+16.Delete before
+17.Delete at pos
+18.Reverse
+0.Exit
+Choice: 17
+Enter position: 6
+1 9 8 2 77 100 64 98 41 
+
+1.Display
+2.Search
+3.Count
+4.Display alternate
+5.Display even pos
+6.Find middle
+7.Insert first
+8.Insert last
+9.Insert after
+10.Insert before
+11.Insert between
+12.Insert at pos
+13.Delete first
+14.Delete last
+15.Delete after
+16.Delete before
+17.Delete at pos
+18.Reverse
+0.Exit
+Choice: 18
+41 98 64 100 77 2 8 9 1 
+
+1.Display
+2.Search
+3.Count
+4.Display alternate
+5.Display even pos
+6.Find middle
+7.Insert first
+8.Insert last
+9.Insert after
+10.Insert before
+11.Insert between
+12.Insert at pos
+13.Delete first
+14.Delete last
+15.Delete after
+16.Delete before
+17.Delete at pos
+18.Reverse
+0.Exit
+Choice: 0
