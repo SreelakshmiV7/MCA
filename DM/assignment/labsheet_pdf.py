@@ -9,31 +9,46 @@ from reportlab.lib.utils import ImageReader
 import os
 
 # === CONFIG ===
-csv_file = r"D:\MCA\DM\assignment\superstore.csv"
-  # Your dataset file
-output_folder = "outputs"
-pdf_file = "Dataset_Report.pdf"
+csv_file = r"D:\MCA\DM\assignment\healthcare-dataset-stroke-data.csv"  # Your dataset file
+# Updated output paths
+assignment_folder = r"D:\MCA\DM\assignment"
+img_folder = os.path.join(assignment_folder, "img")
+pdf_file_name = "Dataset_Report.pdf"
 
-# Create folder if not exists
-os.makedirs(output_folder, exist_ok=True)
+# Create folders if they don't exist
+os.makedirs(img_folder, exist_ok=True)  # Creates img folder inside assignment
+os.makedirs(img_folder, exist_ok=True)  # Ensure outputs subfolder exists (for images)
 
 # === Load Dataset ===
 df = pd.read_csv(csv_file)
 
 # Helper: Save dataframe or plot as image
 def save_df_as_image(df, filename, title=None, max_rows=15):
-    fig, ax = plt.subplots(figsize=(8, 3))
-    ax.axis("off")
-    # if title:
-    #     ax.set_title(title, fontsize=10, pad=10)
     # Limit large datasets for better view
     display_df = df.head(max_rows) if len(df) > max_rows else df
-    table = ax.table(cellText=display_df.values, colLabels=display_df.columns, loc="center", cellLoc="center")
+    
+    # Calculate figure width based on number of columns to make cells wider
+    n_cols = len(display_df.columns)
+    fig_width = max(8, n_cols * 1.5)  # Adjust multiplier as needed (e.g., 1.5 inches per column)
+    
+    fig, ax = plt.subplots(figsize=(fig_width, 3))
+    ax.axis("off")
+    
+    # Calculate equal column widths for the table
+    col_widths = [1.0 / n_cols] * n_cols  # Equal width for all columns
+
+    table = ax.table(
+        cellText=display_df.values,
+        colLabels=display_df.columns,
+        loc="center",
+        cellLoc="center",
+        colWidths=col_widths  # 👈 This sets the width of each cell
+    )
     table.auto_set_font_size(False)
     table.set_fontsize(7)
     table.scale(1, 1.3)
     plt.tight_layout()
-    img_path = os.path.join(output_folder, filename)
+    img_path = os.path.join(img_folder, filename)  # Save images in img folder
     plt.subplots_adjust(top=1, bottom=0, left=0, right=1)
     plt.savefig(img_path, bbox_inches="tight", dpi=200)
     plt.close()
@@ -47,7 +62,7 @@ images = []
 images.append((save_df_as_image(df, "01_entire_dataset.png", "Entire Dataset"), "Figure 1: Entire Dataset"))
 
 # 2. Dataset size
-size_img = os.path.join(output_folder, "02_size.png")
+size_img = os.path.join(img_folder, "02_size.png")
 plt.figure(figsize=(3, 1))
 plt.text(0.1, 0.5, f"Dataset Size: {df.shape}", fontsize=10)
 plt.axis("off")
@@ -68,7 +83,7 @@ buf = StringIO()
 df.info(buf=buf)
 info_text = buf.getvalue()
 
-info_img = os.path.join(output_folder, "05_info.png")
+info_img = os.path.join(img_folder, "05_info.png")
 plt.figure(figsize=(7, 2))
 plt.axis("off")
 plt.text(0, 1, info_text, fontsize=7, va="top", wrap=True)
@@ -79,7 +94,6 @@ images.append((info_img, "Figure 5: Dataset Information"))
 # 6. Statistical View
 stat_df = df.describe().round(4).reset_index().rename(columns={"index": "Statistic"})
 images.append((save_df_as_image(stat_df, "06_stat.png", "Statistical Summary"), "Figure 6: Statistical View of Dataset"))
-
 
 # 7. Data types
 types_img = save_df_as_image(pd.DataFrame(df.dtypes, columns=["Data Type"]).reset_index().rename(columns={"index": "Column"}),
@@ -122,7 +136,7 @@ images.append((save_df_as_image(df_renamed, "13_renamed.png", "After Renaming Se
 # 14. Categorical and Numerical Columns
 categorical = df.select_dtypes(include="object").columns.tolist()
 numerical = df.select_dtypes(exclude="object").columns.tolist()
-cat_num_img = os.path.join(output_folder, "14_catnum.png")
+cat_num_img = os.path.join(img_folder, "14_catnum.png")
 plt.figure(figsize=(5, 2))
 plt.axis("off")
 plt.text(0.01, 0.8, f"Categorical Columns:\n{categorical}\n\nNumerical Columns:\n{numerical}", fontsize=8)
@@ -136,14 +150,22 @@ Q1 = numeric_df.quantile(0.25)
 Q3 = numeric_df.quantile(0.75)
 IQR = Q3 - Q1
 filtered_df = df[~((numeric_df < (Q1 - 1.5 * IQR)) | (numeric_df > (Q3 + 1.5 * IQR))).any(axis=1)]
+# Calculate new dataset shape
+new_shape = filtered_df.shape
+# Create image for filtered dataset
+outlier_img = save_df_as_image(filtered_df, "15_outliers_removed.png", "After Dropping Outliers")
+# Append to image list with shape info in caption
+images.append(
+    (outlier_img,
+     f"Figure 15: Dataset After Dropping Outliers (New Shape: {new_shape[0]} rows × {new_shape[1]} columns)")
+)
 
-images.append((save_df_as_image(filtered_df, "15_outliers_removed.png", "After Dropping Outliers"),
-               "Figure 15: Dataset After Dropping Outliers"))
 
 
-from reportlab.lib.pagesizes import A4 as PAGE_SIZE
+from reportlab.lib.pagesizes import landscape
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch as INCH
+from reportlab.lib.colors import black
 from PIL import Image
 import os
 
@@ -153,18 +175,36 @@ def save_images_to_compact_pdf(image_list, output_pdf):
     - Packs up to 4 figures per page with captions.
     - Automatically resizes images to fit cleanly.
     - Keeps minimal whitespace while maintaining clarity.
+    - NOW IN LANDSCAPE (horizontal) ORIENTATION
     """
-    c = canvas.Canvas(output_pdf, pagesize=PAGE_SIZE)
+    # Use landscape orientation (swaps width and height)
+    from reportlab.lib.pagesizes import A4
+    PAGE_SIZE = landscape(A4)  # 👈 Landscape orientation
     page_width, page_height = PAGE_SIZE
+    
+    c = canvas.Canvas(output_pdf, pagesize=PAGE_SIZE)
     margin = 0.4 * INCH
     padding = 0.2 * INCH
 
-    # Set font for captions
+    # Add main heading only on first page
+    c.setFont("Helvetica-Bold", 20)
+    main_title = "DATASET ANALYSIS REPORT"
+    title_width = c.stringWidth(main_title, "Helvetica-Bold", 20)
+    title_x = (page_width - title_width) / 2
+    title_y = page_height - 0.8 * INCH
+    
+    c.drawString(title_x, title_y, main_title)
+    
+    # Draw underline
+    underline_y = title_y - 5
+    c.line(title_x, underline_y, title_x + title_width, underline_y)
+    
+    # Reset font for captions
     c.setFont("Helvetica", 8)
 
     # Coordinates and layout control
     x = margin
-    y = page_height - margin
+    y = title_y - 1.2 * INCH  # Start below the title
     max_width = page_width - 2 * margin
     max_img_height = 2.2 * INCH  # small fixed height for compact view
 
@@ -188,9 +228,13 @@ def save_images_to_compact_pdf(image_list, output_pdf):
             img_width = img_height * aspect
 
         # If next image doesn’t fit, start new page
-        if y - img_height - 0.4 * INCH < margin:
+        if y - img_height - 0.8 * INCH < margin:  # Increased gap between images
             c.showPage()
-            c.setFont("Helvetica", 8)
+            # Add main heading only on first page (not on subsequent pages)
+            if img_count > 0:  # Only add on first page
+                c.setFont("Helvetica", 8)
+            else:
+                c.setFont("Helvetica", 8)
             y = page_height - margin
             img_count = 0
 
@@ -199,9 +243,9 @@ def save_images_to_compact_pdf(image_list, output_pdf):
 
         # Draw image and caption
         c.drawImage(img_path, x, y - img_height, width=img_width, height=img_height, preserveAspectRatio=True)
-        y -= img_height + 0.1 * INCH
+        y -= img_height + 0.4 * INCH  # Increased gap between image and caption
         c.drawCentredString(page_width / 2, y, caption)
-        y -= 0.35 * INCH
+        y -= 0.6 * INCH  # Increased gap between caption and next image
         img_count += 1
 
         # Force new page after 4 images to keep uniformity
@@ -214,5 +258,6 @@ def save_images_to_compact_pdf(image_list, output_pdf):
     c.save()
     print(f"✅ Compact PDF saved successfully at: {output_pdf}")
 
-output_pdf = os.path.join(output_folder, "Dataset_Report_Compact.pdf")
+# Save PDF in the img folder inside assignment
+output_pdf = os.path.join(img_folder, pdf_file_name)
 save_images_to_compact_pdf(images, output_pdf)
